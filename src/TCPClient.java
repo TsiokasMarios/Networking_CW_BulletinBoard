@@ -40,64 +40,63 @@ public class TCPClient {
 
 
         //Read a text string from the keyboard until you press Enter (new line character).
-        System.out.print("Write a phrase to send to the server:");
-        phrase = inFromUser.readLine();
+        while (true){
+            System.out.println("test4543");
 
-        String variabletoSend = "";
+            System.out.print("Write a phrase to send to the server:");
+            phrase = inFromUser.readLine();
 
-        if (phrase.equalsIgnoreCase("login")){
-            //TODO: login stuff
-            System.out.println("Enter username");
-            phrase += " " + inFromUser.readLine();
+            if (phrase.equalsIgnoreCase("exit")){
+                break;
+            }
+            String variabletoSend = phrase;
 
-            System.out.println("Enter password");
-            phrase += " " + inFromUser.readLine();
-            //ask the user to enter String username and String password
-            //Send the data to the server
-            variabletoSend = " " + phrase;
-        }
-        else if (phrase.equalsIgnoreCase("register")) {
-            //TODO: register stuff
-            //ask the user to enter String username, String password, int phoneNum, String city, String fullName
-            //Send the data to the server
-            variabletoSend = "register";
-        }
-        else if (phrase.equalsIgnoreCase("getAvailableSeats")) {
-            variabletoSend = "getavailableseats";
-        }
-        else if (phrase.equalsIgnoreCase("getAvailableSeatsPerPrice")) {
-            //TODO: venue.getAvailableSeats(price);
-            //prompt user to enter price
-            //store the variable
-            variabletoSend = "getavailableseatsPerPrice" + "replace with variable that stores price gotten from user";
-        }
-        else if (phrase.equalsIgnoreCase("reserve")) {
-            //TODO: venue.reserveSeat();
-            //prompt user to enter the seat ID they want
-            //convert seat ID to capitals
-            variabletoSend = "reserve";
-        }
-        else if (phrase.equalsIgnoreCase("reserverAnon")) {
-            //TODO: venue.reserverSeat(true)
-            //idk how
-            variabletoSend = "reserverAnon";
-        }
-//        while (!phrase.equals("exit")) {
-//            if (phrase.equalsIgnoreCase("login")) {
-//                System.out.print("username:");
-//                phrase += " " + inFromUser.readLine() + " ";
+            if (phrase.equalsIgnoreCase("login")) {
+                //TODO: login stuff
+                System.out.println("Enter username");
+                variabletoSend += " " + inFromUser.readLine();
 
-//                System.out.print("password:");
-//                phrase += inFromUser.readLine();
-//            }
-        //}
+                System.out.println("Enter password");
+                variabletoSend += " " + inFromUser.readLine();
+                //ask the user to enter String username and String password
+                //Send the data to the server
+            } else if (phrase.equalsIgnoreCase("register")) {
+                //TODO: register stuff
+                //ask the user to enter String username, String password, int phoneNum, String city, String fullName
+                //Send the data to the server
+                System.out.println("Enter username");
+                phrase += " " + inFromUser.readLine();
+
+                System.out.println("Enter password");
+                phrase += " " + inFromUser.readLine();
+
+                System.out.println("enter phone number");
+
+                variabletoSend = "register";
+            } else if (phrase.equalsIgnoreCase("getAvailableSeats")) {
+                variabletoSend = "getavailableseats";
+            } else if (phrase.equalsIgnoreCase("getAvailableSeatsPerPrice")) {
+                //TODO: venue.getAvailableSeats(price);
+                //prompt user to enter price
+                //store the variable
+                variabletoSend = "getavailableseatsPerPrice" + "replace with variable that stores price gotten from user";
+            } else if (phrase.equalsIgnoreCase("reserve")) {
+                //TODO: venue.reserveSeat();
+                //prompt user to enter the seat ID they want, customer phone, customer Name
+                //convert seat ID to capitals
+                variabletoSend = "reserve";
+            } else if (phrase.equalsIgnoreCase("reserverAnon")) {
+                //TODO: venue.reserverSeat(true)
+                //idk how
+                variabletoSend = "reserverAnon";
+            }
 
             System.out.println(phrase);
             System.out.println("Sending the phrase to the server");
 
             //Send data (text string) to the server
-        System.out.println(variabletoSend);
-            outToServer.writeBytes(phrase + "\n");
+            System.out.println(variabletoSend);
+            outToServer.writeBytes(variabletoSend + "\n");
 
             System.out.println("Getting server's response");
 
@@ -107,6 +106,9 @@ public class TCPClient {
             //Print the reply/input from the server to the terminal.
             System.out.println("Response from the Server: " + modifiedPhrase);
 
+            outToServer.flush();
+
+        }
 
         System.out.println("Closing the TCP connection to the server");
 
