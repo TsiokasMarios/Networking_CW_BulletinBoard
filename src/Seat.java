@@ -3,10 +3,10 @@ public class Seat {
     private int seatPrice;
     private boolean isAvailable;
 
-    public Seat(String seatId, int seatPrice) {
+    public Seat(String seatId, int seatPrice, Boolean isAvailable) {
         this.seatId = seatId;
         this.seatPrice = seatPrice;
-        isAvailable = true;
+        this.isAvailable = isAvailable;
     }
 
     public String getSeatId() {

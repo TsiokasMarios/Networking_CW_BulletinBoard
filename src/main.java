@@ -7,13 +7,17 @@ public class main {
 
     public static void main(String[] args) {
 
-        Venue venue = new Venue();
+//        Venue venue = new Venue();
 
-        System.out.println(venue.getSeat("X8"));
+//        System.out.println(venue.getSeat("X8"));
+
+//        DButil.initSeats();
+//        DButil.getSeats();
+        DButil.getSeats(60);
 //        venue.getAvailableSeats();
 
-//        String username;
-//        String password;
+        String username;
+        String password;
 //        int phoneNum;
 //        String city;
 //        String fullName;
@@ -22,7 +26,7 @@ public class main {
 //
 //        System.out.println("enter username");
 //        username = sc.nextLine();
-//
+////
 //        System.out.println("enter password");
 //        password = sc.nextLine();
 
