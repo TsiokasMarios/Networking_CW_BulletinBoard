@@ -10,6 +10,7 @@ public class TCPClient {
         String modifiedPhrase;
         String ip = "127.0.0.1";
         int port = 6999;
+        String username;
 
         System.out.println("Starting the client application");
 
@@ -46,26 +47,41 @@ public class TCPClient {
 
         if (phrase.equalsIgnoreCase("login")){
             //TODO: login stuff
-            variabletoSend = "login";
+            System.out.println("Enter username");
+            phrase += " " + inFromUser.readLine();
+
+            System.out.println("Enter password");
+            phrase += " " + inFromUser.readLine();
+            //ask the user to enter String username and String password
+            //Send the data to the server
+            variabletoSend = " " + phrase;
         }
         else if (phrase.equalsIgnoreCase("register")) {
             //TODO: register stuff
+            //make scanner
+            //ask the user to enter String username, String password, int phoneNum, String city, String fullName
+            //Send the data to the server
             variabletoSend = "register";
         }
         else if (phrase.equalsIgnoreCase("getAvailableSeats")) {
-            //TODO: venue.getAvailableSeats();
             variabletoSend = "getavailableseats";
         }
         else if (phrase.equalsIgnoreCase("getAvailableSeatsPerPrice")) {
             //TODO: venue.getAvailableSeats(price);
-            variabletoSend = "getavailableseatsPerPrice";
+            //make scanner
+            //prompt user to enter price
+            //store the variable
+            variabletoSend = "getavailableseatsPerPrice" + "replace with variable that stores price gotten from user";
         }
         else if (phrase.equalsIgnoreCase("reserve")) {
             //TODO: venue.reserveSeat();
+            //prompt user to enter the seat ID they want
+            //convert seat ID to capitals
             variabletoSend = "reserve";
         }
         else if (phrase.equalsIgnoreCase("reserverAnon")) {
             //TODO: venue.reserverSeat(true)
+            //idk how
             variabletoSend = "reserverAnon";
         }
 //        while (!phrase.equals("exit")) {
@@ -82,7 +98,8 @@ public class TCPClient {
             System.out.println("Sending the phrase to the server");
 
             //Send data (text string) to the server
-            outToServer.writeBytes(variabletoSend + "\n");
+        System.out.println(variabletoSend);
+            outToServer.writeBytes(phrase + "\n");
 
             System.out.println("Getting server's response");
 

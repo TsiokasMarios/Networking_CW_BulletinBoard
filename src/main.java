@@ -13,7 +13,7 @@ public class main {
 
 //        DButil.initSeats();
 //        DButil.getSeats();
-        DButil.getSeats(60);
+//        DButil.getSeats(60);
 //        venue.getAvailableSeats();
 
         String username;
@@ -22,28 +22,28 @@ public class main {
 //        String city;
 //        String fullName;
 //
-//        Scanner sc = new Scanner(System.in);
-//
-//        System.out.println("enter username");
-//        username = sc.nextLine();
-////
-//        System.out.println("enter password");
-//        password = sc.nextLine();
+        Scanner sc = new Scanner(System.in);
 
+        System.out.println("enter username");
+        username = sc.nextLine();
+//
+        System.out.println("enter password");
+        password = sc.nextLine();
+//
 //        System.out.println("enter phone num");
 //        phoneNum = sc.nextInt();
 //        sc.nextLine();
 //
 //        System.out.println("enter city");
 //        city = sc.nextLine();
-//
+
 //        System.out.println("enter full name");
 //        fullName = sc.nextLine();
 
 //        System.out.println("username: " + username + "\n password: " + password + "\n phone num: " + phoneNum + "\n city: " + city + "\n full name: " + fullName);
 
 //        DButil.register(username,password,phoneNum,city,fullName);
-//        DButil.login(username,password);
+        DButil.login(username,password);
 
     }
 }

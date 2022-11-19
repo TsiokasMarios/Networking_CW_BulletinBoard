@@ -9,7 +9,7 @@ public class TCPServer {
 
     public static void main(String[] args) throws Exception {
 
-        String clientPhrase;
+        String clientMessage;
         String capitalizedPhrase;
         int port = 6999;
 
@@ -44,34 +44,43 @@ public class TCPServer {
 
             //Consume the input from the client.
             //Read a text string until the new line character.
-            clientPhrase = inFromClient.readLine();
+            clientMessage = inFromClient.readLine();
             String variabletoSend = "";
+            List<String> ar = Arrays.asList(clientMessage.split(" "));
 
-            if (clientPhrase.equalsIgnoreCase("login")){
+            if (ar.get(0).equalsIgnoreCase("login")){
                 //TODO: login stuff
-                variabletoSend = "login";
+                System.out.println("1");
+                System.out.println(ar);
+                String agentid = DButil.login(ar.get(1),ar.get(2));
+
+                variabletoSend = agentid;
             }
-            else if (clientPhrase.equalsIgnoreCase("register")) {
+            else if (clientMessage.equalsIgnoreCase("register")) {
                 //TODO: register stuff
+                System.out.println(ar);
                 variabletoSend = "register";
-            } 
-            else if (clientPhrase.equalsIgnoreCase("getAvailableSeats")) {
+            }
+            else if (clientMessage.equalsIgnoreCase("getAvailableSeats")) {
                 //TODO: venue.getAvailableSeats();
+                System.out.println(ar);
                 variabletoSend = "getavailableseats";
             }
-            else if (clientPhrase.equalsIgnoreCase("getAvailableSeatsPerPrice")) {
+            else if (clientMessage.equalsIgnoreCase("getAvailableSeatsPerPrice")) {
                 //TODO: venue.getAvailableSeats(price);
+                System.out.println(ar);
                 variabletoSend = "getavailableseatsPerPrice";
             }
-            else if (clientPhrase.equalsIgnoreCase("reserve")) {
+            else if (clientMessage.equalsIgnoreCase("reserve")) {
                 //TODO: venue.reserveSeat();
+                System.out.println(ar);
                 variabletoSend = "reserve";
             }
-            else if (clientPhrase.equalsIgnoreCase("reserverAnon")) {
+            else if (clientMessage.equalsIgnoreCase("reserverAnon")) {
                 //TODO: venue.reserverSeat(true)
                 variabletoSend = "reserverAnon";
             }
-//            List<String> ar = Arrays.asList(clientPhrase.split(" "));
+//            List<String> ar = Arrays.asList(clientMessage.split(" "));
 //
 //            System.out.println(ar.get(0));
 //            System.out.println(ar.get(1));
@@ -84,13 +93,13 @@ public class TCPServer {
 //            final LinkedHashMap seats = venue.getSeats();
 
 
-
+            System.out.println(ar);
                 System.out.println("test4");
 
                 System.out.println("Manipulating client request and preparing response");
 
                 //Capitalize the letters of the read text string.
-//                capitalizedPhrase = clientPhrase + '\n';
+//                capitalizedPhrase = clientMessage + '\n';
 
                 System.out.println("Sending response to the client");
 

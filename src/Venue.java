@@ -44,14 +44,14 @@ public class Venue {
 //        venue.forEach((key, value) -> System.out.println(key + " " + value));
 //    }
 
-    public void reserveSeat(String seatID,String custName,int custPhone){
-        //Gets the seat from the hashmap with the seatId that was given
-        Seat seat = venue.get(seatID);
-        //Sets its variable "isAvailable" to false
-        seat.setAvailable(false);
-        //Records the transaction in the database
-        DButil.recordReservation(seatID,custName,custPhone);
-    }
+//    public void reserveSeat(String seatID,String custName,int custPhone){
+//        //Gets the seat from the hashmap with the seatId that was given
+//        Seat seat = venue.get(seatID);
+//        //Sets its variable "isAvailable" to false
+//        seat.setAvailable(false);
+//        //Records the transaction in the database
+//        DButil.recordReservation(seatID,custName,custPhone);
+//    }
 
     public void getAvailableSeats(){
         //map-forEach function that displays all the available seats
