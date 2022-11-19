@@ -58,7 +58,6 @@ public class TCPClient {
         }
         else if (phrase.equalsIgnoreCase("register")) {
             //TODO: register stuff
-            //make scanner
             //ask the user to enter String username, String password, int phoneNum, String city, String fullName
             //Send the data to the server
             variabletoSend = "register";
@@ -68,7 +67,6 @@ public class TCPClient {
         }
         else if (phrase.equalsIgnoreCase("getAvailableSeatsPerPrice")) {
             //TODO: venue.getAvailableSeats(price);
-            //make scanner
             //prompt user to enter price
             //store the variable
             variabletoSend = "getavailableseatsPerPrice" + "replace with variable that stores price gotten from user";
