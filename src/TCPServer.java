@@ -65,6 +65,7 @@ public class TCPServer {
                 } else if (clientMessage.equalsIgnoreCase("register")) {
                     //TODO: register stuff
                     System.out.println(ar);
+
                     variabletoSend = "register";
                 } else if (clientMessage.equalsIgnoreCase("getAvailableSeats")) {
                     //TODO: venue.getAvailableSeats();
