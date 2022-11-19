@@ -10,8 +10,11 @@ public class TCPServer {
     public static void main(String[] args) throws Exception {
 
         String clientMessage;
-        String capitalizedPhrase;
         int port = 6999;
+        InputStreamReader inputStreamReader = null;
+        OutputStreamWriter outputStreamWriter = null;
+        BufferedReader inFromClient = null;
+        BufferedWriter outToClient = null;
 
         System.out.println("Starting the server application");
 
@@ -33,10 +36,13 @@ public class TCPServer {
             System.out.println("Establishing an incoming request");
 
             //Input text stream to get data from the client.
-            BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+            inputStreamReader = new InputStreamReader(connectionSocket.getInputStream());
 
             //Output text stream to send data to the client.
-            DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
+            outputStreamWriter = new OutputStreamWriter(connectionSocket.getOutputStream());
+
+            inFromClient = new BufferedReader(inputStreamReader);
+            outToClient = new BufferedWriter(outputStreamWriter);
 
             System.out.println("Defined input text stream from the client and output text stream to the client");
 
@@ -44,71 +50,65 @@ public class TCPServer {
 
             //Consume the input from the client.
             //Read a text string until the new line character.
-            clientMessage = inFromClient.readLine();
-            String variabletoSend = "";
-            List<String> ar = Arrays.asList(clientMessage.split(" "));
+            while (true) {
+                clientMessage = inFromClient.readLine();
+                String variabletoSend = "";
+                List<String> ar = Arrays.asList(clientMessage.split(" "));
 
-            if (ar.get(0).equalsIgnoreCase("login")){
-                //TODO: login stuff
-                System.out.println("1");
-                System.out.println(ar);
-                String agentid = DButil.login(ar.get(1),ar.get(2));
+                if (ar.get(0).equalsIgnoreCase("login")) {
+                    //TODO: login stuff
+                    System.out.println("1");
+                    System.out.println(ar);
+                    String agentid = DButil.login(ar.get(1), ar.get(2));
 
-                variabletoSend = agentid;
-            }
-            else if (clientMessage.equalsIgnoreCase("register")) {
-                //TODO: register stuff
-                System.out.println(ar);
-                variabletoSend = "register";
-            }
-            else if (clientMessage.equalsIgnoreCase("getAvailableSeats")) {
-                //TODO: venue.getAvailableSeats();
-                System.out.println(ar);
-                variabletoSend = "getavailableseats";
-            }
-            else if (clientMessage.equalsIgnoreCase("getAvailableSeatsPerPrice")) {
-                //TODO: venue.getAvailableSeats(price);
-                System.out.println(ar);
-                variabletoSend = "getavailableseatsPerPrice";
-            }
-            else if (clientMessage.equalsIgnoreCase("reserve")) {
-                //TODO: venue.reserveSeat();
-                System.out.println(ar);
-                variabletoSend = "reserve";
-            }
-            else if (clientMessage.equalsIgnoreCase("reserverAnon")) {
-                //TODO: venue.reserverSeat(true)
-                variabletoSend = "reserverAnon";
-            }
-//            List<String> ar = Arrays.asList(clientMessage.split(" "));
-//
-//            System.out.println(ar.get(0));
-//            System.out.println(ar.get(1));
-//            System.out.println(ar.get(2));
+                    variabletoSend = agentid;
+                } else if (clientMessage.equalsIgnoreCase("register")) {
+                    //TODO: register stuff
+                    System.out.println(ar);
+                    variabletoSend = "register";
+                } else if (clientMessage.equalsIgnoreCase("getAvailableSeats")) {
+                    //TODO: venue.getAvailableSeats();
+                    System.out.println(ar);
+                    variabletoSend = "getavailableseats";
+                } else if (clientMessage.equalsIgnoreCase("getAvailableSeatsPerPrice")) {
+                    //TODO: venue.getAvailableSeats(price);
+                    System.out.println(ar);
+                    variabletoSend = "getavailableseatsPerPrice";
+                } else if (clientMessage.equalsIgnoreCase("reserve")) {
+                    //TODO: venue.reserveSeat();
+                    System.out.println(ar);
+                    variabletoSend = "reserve";
+                } else if (clientMessage.equalsIgnoreCase("reserverAnon")) {
+                    //TODO: venue.reserverSeat(true)
+                    variabletoSend = "reserverAnon";
+                }
+                //            List<String> ar = Arrays.asList(clientMessage.split(" "));
+                //
+                //            System.out.println(ar.get(0));
+                //            System.out.println(ar.get(1));
+                //            System.out.println(ar.get(2));
 
-//            if (DButil.login(ar.get(1), ar.get(2))) {
-//                outToClient.writeBytes("test34"+"\n");
-//            } else {
-//            Venue venue = new Venue();
-//            final LinkedHashMap seats = venue.getSeats();
+                //            if (DButil.login(ar.get(1), ar.get(2))) {
+                //                outToClient.writeBytes("test34"+"\n");
+                //            } else {
+                //            Venue venue = new Venue();
+                //            final LinkedHashMap seats = venue.getSeats();
 
 
-            System.out.println(ar);
+                System.out.println(ar);
                 System.out.println("test4");
 
                 System.out.println("Manipulating client request and preparing response");
 
-                //Capitalize the letters of the read text string.
-//                capitalizedPhrase = clientMessage + '\n';
 
                 System.out.println("Sending response to the client");
 
                 //Send data to the client using the output text stream.
-                outToClient.writeBytes(variabletoSend + "\n");
-//            }
+                outToClient.write(variabletoSend + "\n");
 
+                outToClient.flush();
+            }
         }
-
 
         //The server remains active waiting for incoming connections
         //Each TCP connection originating from a client is terminated by the client itself
