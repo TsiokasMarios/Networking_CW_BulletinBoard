@@ -52,34 +52,51 @@ public class TCPServer {
             //Read a text string until the new line character.
             while (true) {
                 clientMessage = inFromClient.readLine();
+
                 String variabletoSend = "";
                 List<String> ar = Arrays.asList(clientMessage.split(" "));
 
                 if (ar.get(0).equalsIgnoreCase("login")) {
-                    //TODO: login stuff
-                    System.out.println("1");
-                    System.out.println(ar);
                     String agentid = DButil.login(ar.get(1), ar.get(2));
 
                     variabletoSend = agentid;
-                } else if (clientMessage.equalsIgnoreCase("register")) {
-                    //TODO: register stuff
-                    System.out.println(ar);
+                } else if (ar.get(0).equalsIgnoreCase("register")) {
 
-                    variabletoSend = "register";
-                } else if (clientMessage.equalsIgnoreCase("getAvailableSeats")) {
-                    //TODO: venue.getAvailableSeats();
-                    System.out.println(ar);
-                    variabletoSend = "getavailableseats";
-                } else if (clientMessage.equalsIgnoreCase("getAvailableSeatsPerPrice")) {
-                    //TODO: venue.getAvailableSeats(price);
-                    System.out.println(ar);
-                    variabletoSend = "getavailableseatsPerPrice";
-                } else if (clientMessage.equalsIgnoreCase("reserve")) {
+                    Boolean registered = DButil.register(ar.get(1),ar.get(2), Integer.parseInt(ar.get(3)),ar.get(4),ar.get(5));
+
+                    if (registered){
+                        variabletoSend = "Registered succesfuly";
+                    }
+                    else {
+                        variabletoSend = "Something went wrong.Please try again";
+                    }
+
+                }
+                else if (ar.get(0).equalsIgnoreCase("getAvailableSeats")) {
+                    System.out.println("test345");
+                    //TODO: display available seats nicely;
+                    if (ar.size() == 1 ){
+                        System.out.println("getseats");
+                        System.out.println(ar.size());
+                        variabletoSend = String.valueOf(DButil.getSeats());
+                    }
+                    else if (ar.size() == 2){
+                        System.out.println("getseatsPerPrice");
+                        variabletoSend = String.valueOf(DButil.getSeats(Integer.parseInt(ar.get(1))));
+                    }
+                }
+                else if (ar.get(0).equalsIgnoreCase("perprice")) {
+                    //TODO: display available seats nicely;
+                    System.out.println("getseatsPrice");
+
+                    variabletoSend = String.valueOf((DButil.getSeats(Integer.parseInt(ar.get(1)))));
+                }
+                else if (ar.get(0).equalsIgnoreCase("reserve")) {
                     //TODO: venue.reserveSeat();
                     System.out.println(ar);
                     variabletoSend = "reserve";
-                } else if (clientMessage.equalsIgnoreCase("reserverAnon")) {
+                }
+                else if (ar.get(0).equalsIgnoreCase("reserverAnon")) {
                     //TODO: venue.reserverSeat(true)
                     variabletoSend = "reserverAnon";
                 }
@@ -95,10 +112,6 @@ public class TCPServer {
                 //            Venue venue = new Venue();
                 //            final LinkedHashMap seats = venue.getSeats();
 
-
-                System.out.println(ar);
-                System.out.println("test4");
-
                 System.out.println("Manipulating client request and preparing response");
 
 
@@ -113,7 +126,6 @@ public class TCPServer {
 
         //The server remains active waiting for incoming connections
         //Each TCP connection originating from a client is terminated by the client itself
-
     }
 
 }

@@ -29,7 +29,7 @@ public class DButil {
         }
     }
 
-    public static void getSeats(){
+    public static LinkedHashMap getSeats(){
         try{
             Connection conn = createCon();
 
@@ -43,6 +43,7 @@ public class DButil {
             }
             seats.forEach((key, value) -> System.out.println(key + " " + value));
             closeConnection(conn);
+            return seats;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -77,8 +78,9 @@ public class DButil {
 
     }
 
-    public static void getSeats(int price){
+    public static LinkedHashMap getSeats(int price){
         try{
+            System.out.println("connected");
             Connection conn = createCon();
             String query = "SELECT * FROM seats WHERE price = ? and isAvailable = 1";
             PreparedStatement statement = conn.prepareStatement(query);
@@ -90,8 +92,9 @@ public class DButil {
             while (resultSet.next()){
                 seats.put(resultSet.getString(1),new Seat(resultSet.getString(1),resultSet.getInt(2),resultSet.getBoolean(3)));
             }
-
+            closeConnection(conn);
             seats.forEach((key, value) -> System.out.println(key + " " + value));
+            return seats;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -149,7 +152,7 @@ public class DButil {
         }
     }
 
-    public static void register(String username, String password, int phoneNum, String city, String fullName){
+    public static Boolean register(String username, String password, int phoneNum, String city, String fullName){
 
         //Create the database connection
         Connection conn = createCon();
@@ -182,9 +185,11 @@ public class DButil {
 
             //Closes the database connection
             conn.close();
+            return true;
         }
         catch (Exception e){
             e.printStackTrace();
+            return  false;
         }
     }
 
