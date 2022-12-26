@@ -1,8 +1,6 @@
 import java.io.*;
-import java.lang.reflect.Array;
 import java.net.*;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public class TCPServer {
@@ -11,10 +9,10 @@ public class TCPServer {
 
         String clientMessage;
         int port = 6999;
-        InputStreamReader inputStreamReader = null;
-        OutputStreamWriter outputStreamWriter = null;
-        BufferedReader inFromClient = null;
-        BufferedWriter outToClient = null;
+        InputStreamReader inputStreamReader;
+        OutputStreamWriter outputStreamWriter;
+        BufferedReader inFromClient;
+        BufferedWriter outToClient;
 
         System.out.println("Starting the server application");
 
@@ -57,9 +55,8 @@ public class TCPServer {
                 List<String> ar = Arrays.asList(clientMessage.split(" "));
 
                 if (ar.get(0).equalsIgnoreCase("login")) {
-                    String agentid = DButil.login(ar.get(1), ar.get(2));
 
-                    variabletoSend = agentid;
+                    variabletoSend = DButil.login(ar.get(1), ar.get(2));
                 } else if (ar.get(0).equalsIgnoreCase("register")) {
 
                     Boolean registered = DButil.register(ar.get(1),ar.get(2), Integer.parseInt(ar.get(3)),ar.get(4),ar.get(5));
