@@ -57,14 +57,10 @@ public class TCPServer {
                 String variableToSend = "";
                 List<String> ar = Arrays.asList(clientMessage.split(" "));
 
-                if (ar.get(0).equalsIgnoreCase("login")) {
 
-                    variableToSend = DButil.login(ar.get(1), ar.get(2));
-                }
+                if (ar.get(0).equalsIgnoreCase("register")) {
 
-                else if (ar.get(0).equalsIgnoreCase("register")) {
-
-                    Boolean registered = DButil.register(ar.get(1),ar.get(2), Integer.parseInt(ar.get(3)),ar.get(4),ar.get(5));
+                    Boolean registered = DButil.register(ar.get(1), Integer.parseInt(ar.get(3)),ar.get(4),ar.get(5));
 
                     if (registered){
                         variableToSend = "Registered succesfuly";
@@ -88,20 +84,15 @@ public class TCPServer {
                     //TODO: display available seats nicely;
 
                 }
-//                else if (ar.get(0).equalsIgnoreCase("perprice")) {
-//                    System.out.println("DONT SUCK A PP");
-//                    //TODO: display available seats nicely;
-//                    System.out.println("getseatsPrice");
-//                    variableToSend = String.valueOf((DButil.getSeats(Integer.parseInt(ar.get(1)))));
-//                }
                 else if (ar.get(0).equalsIgnoreCase("reserve")) {
-                    //TODO: venue.reserveSeat();
+                    //TODO: DButil.reserveSeat();
+                    DButil.reserveSeat(ar.get(1),ar.get(2),ar.get(4),Integer.parseInt(ar.get(3)));
 
                     System.out.println(ar);
                     variableToSend = "reserve";
                 }
                 else if (ar.get(0).equalsIgnoreCase("reserverAnon")) {
-                    //TODO: venue.reserverSeat(true)
+                    //TODO: DButil.reserverSeat(true)
                     variableToSend = "reserverAnon";
                 }
                 //            List<String> ar = Arrays.asList(clientMessage.split(" "));

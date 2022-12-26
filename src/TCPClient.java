@@ -51,21 +51,19 @@ public class TCPClient {
             }
             String variabletoSend = phrase;
 
-            if (phrase.equalsIgnoreCase("login")) {
-                System.out.println("Enter username");
-                variabletoSend += " " + inFromUser.readLine();
-
-                System.out.println("Enter password");
-                variabletoSend += " " + inFromUser.readLine();
-                //ask the user to enter String username and String password
-                //Send the data to the server
-            } else if (phrase.equalsIgnoreCase("register")) {
+//            if (phrase.equalsIgnoreCase("login")) {
+//                System.out.println("Enter username");
+//                variabletoSend += " " + inFromUser.readLine();
+//
+//                System.out.println("Enter password");
+//                variabletoSend += " " + inFromUser.readLine();
+//                //ask the user to enter String username and String password
+//                //Send the data to the server
+//            }
+            if (phrase.equalsIgnoreCase("register")) {
                 //ask the user to enter String username, String password, int phoneNum, String city, String fullName
                 //Send the data to the server
                 System.out.println("Enter username");
-                variabletoSend += " " + inFromUser.readLine();
-
-                System.out.println("Enter password");
                 variabletoSend += " " + inFromUser.readLine();
 
                 System.out.println("Enter phone number");
@@ -90,6 +88,9 @@ public class TCPClient {
             else if (phrase.equalsIgnoreCase("reserve")) {
                 //prompt user to enter the seat ID they want, customer phone, customer Name
                 //convert seat ID to capitals
+                System.out.println("Enter your username");
+                variabletoSend += " " + inFromUser.readLine();
+
                 System.out.println("Enter seat ID");
                 variabletoSend += " " + inFromUser.readLine();
                 System.out.println("Enter your customer's phone number");

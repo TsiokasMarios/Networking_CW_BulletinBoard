@@ -50,7 +50,7 @@ public class DButil {
 
 
 
-    public static void reserveSeat(String seatID, String custName, int custPhone ){
+    public static void reserveSeat(String clientUsername, String seatID, String custName, int custPhone ){
         try{
             Connection conn = createCon();
             String query = "INSERT INTO seatReservation (seatID,custName,custPhone) values (?,?,?)";
@@ -153,7 +153,7 @@ public class DButil {
         }
     }
 
-    public static Boolean register(String username, String password, int phoneNum, String city, String fullName){
+    public static Boolean register(String username, int phoneNum, String city, String fullName){
 
         //Create the database connection
         Connection conn = createCon();
@@ -162,7 +162,7 @@ public class DButil {
         Encryptor enc = new Encryptor();
 
         //Create an insert query to insert the values in the agents table
-        String query = "insert into agents values (?,?,?,?,?)";
+        String query = "insert into agents values (?,?,?,?)";
 
         //Initialize statement variable
         PreparedStatement statement;
@@ -176,10 +176,10 @@ public class DButil {
 
             //Insert the values we received from the user
             statement.setString(1,username);
-            statement.setString(2,enc.encryptString(password)); //Gets the password and encrypts it with the enc object
-            statement.setInt(3,phoneNum);
-            statement.setString(4,city);
-            statement.setString(5,fullName);
+//            statement.setString(2,enc.encryptString(password)); //Gets the password and encrypts it with the enc object
+            statement.setInt(2,phoneNum);
+            statement.setString(3,city);
+            statement.setString(4,fullName);
 
             //Executes the statement
             statement.executeUpdate();
@@ -194,45 +194,45 @@ public class DButil {
         }
     }
 
-    public static String login(String username, String password) {
-        //Create the database connection
-        Connection conn = createCon();
-
-        //Create the encryptor to encrypt password
-        Encryptor enc = new Encryptor();
-
-        //Initialize the variables
-        PreparedStatement statement;
-        ResultSet resultSet;
-
-        //Create a select query to check if the username and the password exist in the database
-        String query = "select * from agents where username = ? and password = ?";
-
-        try {
-            //Prepare the statement
-            statement = conn.prepareStatement(query);
-
-            //Insert the values we received from the user
-            statement.setString(1, username);
-            statement.setString(2, enc.encryptString(password)); //Gets the password and encrypts it with the enc object
-
-            //Executes the statement
-            resultSet = statement.executeQuery();
-
-            if (resultSet.next()) { //Checks if there are any records that match the data in the database with the data we got
-                System.out.println("Poggers, logged in");
-                conn.close();
-                return username;
-            } else {
-                System.out.println("Something went wrong");
-                conn.close();
-                return "null";
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "null";
-        }
-    }
+//    public static String login(String username, String password) {
+//        //Create the database connection
+//        Connection conn = createCon();
+//
+//        //Create the encryptor to encrypt password
+//        Encryptor enc = new Encryptor();
+//
+//        //Initialize the variables
+//        PreparedStatement statement;
+//        ResultSet resultSet;
+//
+//        //Create a select query to check if the username and the password exist in the database
+//        String query = "select * from agents where username = ? and password = ?";
+//
+//        try {
+//            //Prepare the statement
+//            statement = conn.prepareStatement(query);
+//
+//            //Insert the values we received from the user
+//            statement.setString(1, username);
+//            statement.setString(2, enc.encryptString(password)); //Gets the password and encrypts it with the enc object
+//
+//            //Executes the statement
+//            resultSet = statement.executeQuery();
+//
+//            if (resultSet.next()) { //Checks if there are any records that match the data in the database with the data we got
+//                System.out.println("Poggers, logged in");
+//                conn.close();
+//                return username;
+//            } else {
+//                System.out.println("Something went wrong");
+//                conn.close();
+//                return "null";
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return "null";
+//        }
+//    }
 }
 
