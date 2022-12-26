@@ -85,7 +85,7 @@ public class TCPClient {
                 //prompt user to enter price
                 //store the variable
                 System.out.println("Enter price to search by");
-                variabletoSend += " " + inFromUser.readLine();
+                variabletoSend = "getAvailableSeats " + inFromUser.readLine();
             }
             else if (phrase.equalsIgnoreCase("reserve")) {
                 //prompt user to enter the seat ID they want, customer phone, customer Name
@@ -116,9 +116,7 @@ public class TCPClient {
 
             //Print the reply/input from the server to the terminal.
             System.out.println("Response from the Server: " + modifiedPhrase);
-
             outToServer.flush();
-
         }
 
         System.out.println("Closing the TCP connection to the server");

@@ -48,6 +48,8 @@ public class DButil {
         }
     }
 
+
+
     public static void reserveSeat(String seatID, String custName, int custPhone ){
         try{
             Connection conn = createCon();
@@ -79,9 +81,9 @@ public class DButil {
 
     public static LinkedHashMap getSeats(int price){
         try{
-            System.out.println("connected");
+            System.out.println("connected, getting available seats");
             Connection conn = createCon();
-            String query = "SELECT * FROM seats WHERE price = ? and isAvailable = 1";
+            String query = "SELECT * FROM seats WHERE price = ? and isAvailable = 1 ORDER BY price";
             PreparedStatement statement = conn.prepareStatement(query);
             statement.setInt(1,price);
 
@@ -92,7 +94,7 @@ public class DButil {
                 seats.put(resultSet.getString(1),new Seat(resultSet.getString(1),resultSet.getInt(2),resultSet.getBoolean(3)));
             }
             closeConnection(conn);
-            seats.forEach((key, value) -> System.out.println(key + " " + value));
+//            seats.forEach((key, value) -> System.out.println(key + " " + value));
             return seats;
         } catch (SQLException e) {
             throw new RuntimeException(e);

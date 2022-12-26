@@ -1,7 +1,10 @@
 import java.io.*;
 import java.net.*;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class TCPServer {
 
@@ -51,51 +54,55 @@ public class TCPServer {
             while (true) {
                 clientMessage = inFromClient.readLine();
 
-                String variabletoSend = "";
+                String variableToSend = "";
                 List<String> ar = Arrays.asList(clientMessage.split(" "));
 
                 if (ar.get(0).equalsIgnoreCase("login")) {
 
-                    variabletoSend = DButil.login(ar.get(1), ar.get(2));
-                } else if (ar.get(0).equalsIgnoreCase("register")) {
+                    variableToSend = DButil.login(ar.get(1), ar.get(2));
+                }
+
+                else if (ar.get(0).equalsIgnoreCase("register")) {
 
                     Boolean registered = DButil.register(ar.get(1),ar.get(2), Integer.parseInt(ar.get(3)),ar.get(4),ar.get(5));
 
                     if (registered){
-                        variabletoSend = "Registered succesfuly";
+                        variableToSend = "Registered succesfuly";
                     }
                     else {
-                        variabletoSend = "Something went wrong.Please try again";
+                        variableToSend = "Something went wrong.Please try again";
                     }
 
                 }
                 else if (ar.get(0).equalsIgnoreCase("getAvailableSeats")) {
-                    System.out.println("test345");
-                    //TODO: display available seats nicely;
-                    if (ar.size() == 1 ){
-                        System.out.println("getseats");
-                        System.out.println(ar.size());
-                        variabletoSend = String.valueOf(DButil.getSeats());
+                    System.out.println(ar.size());
+                    LinkedHashMap<String,Seat> map1= DButil.getSeats();
+                    if (ar.size() == 1)
+                        variableToSend = String.valueOf(map1);
+                    else if (ar.size() == 2) {
+                        Map<String, Seat> filtered = map1.entrySet().stream()
+                                .filter(map -> map.getValue().getSeatPrice() == 60)
+                                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                        variableToSend = String.valueOf(filtered);
                     }
-                    else if (ar.size() == 2){
-                        System.out.println("getseatsPerPrice");
-                        variabletoSend = String.valueOf(DButil.getSeats(Integer.parseInt(ar.get(1))));
-                    }
-                }
-                else if (ar.get(0).equalsIgnoreCase("perprice")) {
                     //TODO: display available seats nicely;
-                    System.out.println("getseatsPrice");
 
-                    variabletoSend = String.valueOf((DButil.getSeats(Integer.parseInt(ar.get(1)))));
                 }
+//                else if (ar.get(0).equalsIgnoreCase("perprice")) {
+//                    System.out.println("DONT SUCK A PP");
+//                    //TODO: display available seats nicely;
+//                    System.out.println("getseatsPrice");
+//                    variableToSend = String.valueOf((DButil.getSeats(Integer.parseInt(ar.get(1)))));
+//                }
                 else if (ar.get(0).equalsIgnoreCase("reserve")) {
                     //TODO: venue.reserveSeat();
+
                     System.out.println(ar);
-                    variabletoSend = "reserve";
+                    variableToSend = "reserve";
                 }
                 else if (ar.get(0).equalsIgnoreCase("reserverAnon")) {
                     //TODO: venue.reserverSeat(true)
-                    variabletoSend = "reserverAnon";
+                    variableToSend = "reserverAnon";
                 }
                 //            List<String> ar = Arrays.asList(clientMessage.split(" "));
                 //
@@ -115,8 +122,7 @@ public class TCPServer {
                 System.out.println("Sending response to the client");
 
                 //Send data to the client using the output text stream.
-                outToClient.write(variabletoSend + "\n");
-
+                outToClient.write(variableToSend + "\n");
                 outToClient.flush();
             }
         }

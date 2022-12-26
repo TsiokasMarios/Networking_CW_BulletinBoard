@@ -1,9 +1,10 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 
 public class main {
+
 
     public static void main(String[] args) {
 
@@ -13,11 +14,19 @@ public class main {
 
 //        DButil.initSeats();
 //        DButil.getSeats();
-        DButil.getSeats(60);
+//        LinkedHashMap<String,Seat> map1;
+//
+//        Map<String, Seat> collect = map1.entrySet().stream()
+//                .filter(map -> map.getValue().getSeatPrice() == 60)
+//                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+//        System.out.println("Filtered map \n " + collect);
+
+
 //        venue.getAvailableSeats();
 
-        String username;
-        String password;
+//        String username;
+//        String password;
 //        int phoneNum;
 //        String city;
 //        String fullName;
