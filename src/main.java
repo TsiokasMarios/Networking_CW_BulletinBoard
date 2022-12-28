@@ -21,7 +21,8 @@ public class main {
 //                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
 //        System.out.println("Filtered map \n " + collect);
-
+//        DButil.register("Bob",8484,"wah","Timythy tim");
+        System.out.println(DButil.isUserExists(""));
 
 //        venue.getAvailableSeats();
 
