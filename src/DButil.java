@@ -49,7 +49,7 @@ public class DButil {
     }
 
 
-    public static void reserveSeat(String clientUsername, String seatID, String custName, int custPhone) {
+    public static void reserveSeat(String seatID, String custName, int custPhone) {
         try {
             Connection conn = createCon();
             String query = "INSERT INTO seatReservation (seatID,custName,custPhone) values (?,?,?)";
@@ -58,16 +58,16 @@ public class DButil {
             statement.setString(2, custName);
             statement.setInt(3, custPhone);
 
-            statement.executeQuery();
+            statement.executeUpdate();
             statement.clearParameters();
 
-            query = "update seats set isAvailable = ? where seatId = ?";
+            query = "update seats set isAvailable = ? where id = ?";
 
             statement = conn.prepareStatement(query);
             statement.setInt(1, 0);
             statement.setString(2, seatID);
 
-            statement.executeQuery();
+            statement.executeUpdate();
             statement.clearParameters();
             closeConnection(conn);
 

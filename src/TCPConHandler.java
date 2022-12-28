@@ -111,7 +111,7 @@ public class TCPConHandler implements Runnable {
                 //TODO: display available seats nicely;
 
             } else if (ar.get(0).equalsIgnoreCase("reserve")) {
-                DButil.reserveSeat(ar.get(1), ar.get(2), ar.get(4), Integer.parseInt(ar.get(3)));
+                DButil.reserveSeat(ar.get(2), ar.get(1),Integer.parseInt(ar.get(3)));
 
                 System.out.println(ar);
                 variableToSend = "reserve";

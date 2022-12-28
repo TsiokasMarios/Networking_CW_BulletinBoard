@@ -22,7 +22,8 @@ public class main {
 
 //        System.out.println("Filtered map \n " + collect);
 //        DButil.register("Bob",8484,"wah","Timythy tim");
-        System.out.println(DButil.checkIfUserExists("Tim"));
+//        System.out.println(DButil.checkIfUserExists("Tim"));
+        DButil.reserveSeat("A3","tim",6481712);
 
 //        venue.getAvailableSeats();
 
