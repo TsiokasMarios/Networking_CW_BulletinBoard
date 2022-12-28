@@ -1,6 +1,5 @@
 import java.io.*;
 import java.net.*;
-import java.util.LinkedHashMap;
 
 public class TCPClient {
 
@@ -14,7 +13,7 @@ public class TCPClient {
         DataOutputStream outToServer;
         BufferedReader inFromServer;
 //        int port = 6999;
-//        String username;
+        String username = null;
 
 //        System.out.println("Starting the client application");
         System.out.println("-- Client connecting to host/port " + host + "/" + port + " --");
@@ -56,7 +55,11 @@ public class TCPClient {
         //Read a text string from the keyboard until you press Enter (new line character).
         try {
             while (true) {
-                System.out.println("test4543");
+                if (username == null)
+                    System.out.println("Enter the number for what you want to do: \n1.Register\n 2.Login \n3.Get available seats \n4.Get available seats per price\n5.Exit");
+                else
+                    System.out.println("Enter the number for what you want to do: \n 1.Get available seats\n2.Get available seats per price\n3.Reserve a seat\n4.Exit");
+                //if user presses 1, send message to the server to see if username exists and then show different menu
 
                 System.out.print("Write a phrase to send to the server:");
                 phrase = inFromUser.readLine();
@@ -82,7 +85,11 @@ public class TCPClient {
                     System.out.println("Enter full name");
                     variabletoSend += " " + inFromUser.readLine();
 
-                } else if (phrase.equalsIgnoreCase("getAvailableSeats")) {
+                }else if(phrase.equalsIgnoreCase("login")){
+                    System.out.println("Enter username");
+                    variabletoSend += " " + inFromUser.readLine();
+                }
+                else if (phrase.equalsIgnoreCase("getAvailableSeats")) {
                     variabletoSend = "getAvailableSeats";
                 } else if (phrase.equalsIgnoreCase("perprice")) {
                     //prompt user to enter price
@@ -118,6 +125,12 @@ public class TCPClient {
 
                 //Consume the reply/input from the server.
                 modifiedPhrase = inFromServer.readLine();
+
+                if (phrase.equalsIgnoreCase("login")){
+                    if (modifiedPhrase!= "wah"){
+                        username = modifiedPhrase;
+                    }
+                }
 
                 //Print the reply/input from the server to the terminal.
                 System.out.println("Response from the Server: " + modifiedPhrase);

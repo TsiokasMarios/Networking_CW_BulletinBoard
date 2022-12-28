@@ -97,7 +97,15 @@ public class TCPConHandler implements Runnable {
                     variableToSend = "Something went wrong.Please try again";
                 }
 
-            } else if (ar.get(0).equalsIgnoreCase("getAvailableSeats")) {
+            }else if(ar.get(0).equalsIgnoreCase("login")){
+                if (DButil.checkIfUserExists(ar.get(1))){
+                    variableToSend = ar.get(1);
+                }
+                else{
+                    variableToSend = "wah";
+                }
+            }
+            else if (ar.get(0).equalsIgnoreCase("getAvailableSeats")) {
                 System.out.println(ar.size());
                 LinkedHashMap<String, Seat> map1 = DButil.getSeats();
                 if (ar.size() == 1)
