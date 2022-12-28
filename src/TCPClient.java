@@ -66,14 +66,6 @@ public class TCPClient {
                 }
                 String variabletoSend = phrase;
 
-//            if (phrase.equalsIgnoreCase("login")) {
-//                System.out.println("Enter username");
-//                variabletoSend += " " + inFromUser.readLine();
-//
-//                System.out.println("Enter password");
-//                variabletoSend += " " + inFromUser.readLine();
-//                //ask the user to enter String username and String password
-//                //Send the data to the server
 //            }
                 if (phrase.equalsIgnoreCase("register")) {
                     //ask the user to enter String username, String password, int phoneNum, String city, String fullName
