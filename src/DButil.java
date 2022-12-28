@@ -108,7 +108,7 @@ public class DButil {
             Connection conn = createCon();
             //Define the query
             String query = "insert into seats values (?,?,?)";
-            //Prepare the statement
+            //Prepare the staement
             PreparedStatement statement = conn.prepareStatement(query);
 
             char[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
@@ -159,6 +159,7 @@ public class DButil {
         Connection conn = createCon();
 
         //Create the encryptor to encrypt password
+        Encryptor enc = new Encryptor();
 
         //Create an insert query to insert the values in the agents table
         String query = "insert into agents values (?,?,?,?)";
@@ -192,30 +193,71 @@ public class DButil {
             return  false;
         }
     }
-    public static boolean isUserExists(String username) {
-        Connection conn = createCon();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
+
+//    public static String login(String username, String password) {
+//        //Create the database connection
+//        Connection conn = createCon();
+//
+//        //Create the encryptor to encrypt password
+//        Encryptor enc = new Encryptor();
+//
+//        //Initialize the variables
+//        PreparedStatement statement;
+//        ResultSet resultSet;
+//
+//        //Create a select query to check if the username and the password exist in the database
+//        String query = "select * from agents where username = ? and password = ?";
+//
+//        try {
+//            //Prepare the statement
+//            statement = conn.prepareStatement(query);
+//
+//            //Insert the values we received from the user
+//            statement.setString(1, username);
+//            statement.setString(2, enc.encryptString(password)); //Gets the password and encrypts it with the enc object
+//
+//            //Executes the statement
+//            resultSet = statement.executeQuery();
+//
+//            if (resultSet.next()) { //Checks if there are any records that match the data in the database with the data we got
+//                System.out.println("Poggers, logged in");
+//                conn.close();
+//                return username;
+//            } else {
+//                System.out.println("Something went wrong");
+//                conn.close();
+//                return "null";
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return "null";
+//        }
+//    }
+public boolean checkIfUserExists(String username) {
+    Connection conn = createCon();
+    PreparedStatement stmt = null;
+    ResultSet rs = null;
+    try {
+        String query = "SELECT * FROM agents WHERE username = ?";
+        stmt = conn.prepareStatement(query);
+        stmt.setString(1, username);
+        rs = stmt.executeQuery();
+        if (rs.next()) {
+            return true;
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
         try {
-            String query = "SELECT * FROM agents WHERE username = ?";
-            stmt = conn.prepareStatement(query);
-            stmt.setString(1, username);
-            rs = stmt.executeQuery();
-            if (rs.next()) {
-                return true;
-            }
+            rs.close();
+            stmt.close();
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                rs.close();
-                stmt.close();
-                conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
-        return false;
+    }
+    return false;
     }
 }
 
