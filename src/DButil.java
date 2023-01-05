@@ -49,7 +49,8 @@ public class DButil {
     }
 
 
-    public static void reserveSeat(String seatID, String custName, int custPhone) {
+    public static int reserveSeat(String seatID, String custName, int custPhone) {
+        int isSuccesuful = 0;
         try {
             Connection conn = createCon();
             String query = "INSERT INTO seatReservation (seatID,custName,custPhone) values (?,?,?)";
@@ -67,14 +68,13 @@ public class DButil {
             statement.setInt(1, 0);
             statement.setString(2, seatID);
 
-            statement.executeUpdate();
+            isSuccesuful = statement.executeUpdate();
             statement.clearParameters();
             closeConnection(conn);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        return isSuccesuful;
     }
 
     public static LinkedHashMap getSeats(int price) {

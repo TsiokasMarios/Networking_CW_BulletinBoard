@@ -64,7 +64,7 @@ public class TCPConHandler implements Runnable {
 
         System.out.println("Reading data from the client");
 
-        List<String> ar = null;
+        List<String> ar;
 
         //Consume the input from the client.
         //Read a text string until the new line character.
@@ -84,6 +84,7 @@ public class TCPConHandler implements Runnable {
                 break;
             }
 
+            //Array that stores the messages from the client
             ar = Arrays.asList(clientMessage.split(" "));
 
 
@@ -102,13 +103,15 @@ public class TCPConHandler implements Runnable {
                     variableToSend = ar.get(1);
                 }
                 else{
-                    variableToSend = "wah";
+                    variableToSend = "Wrong name";
                 }
             }
             else if (ar.get(0).equalsIgnoreCase("getAvailableSeats")) {
-                System.out.println(ar.size());
                 LinkedHashMap<String, Seat> map1 = DButil.getSeats();
-                if (ar.size() == 1)
+                if (map1.isEmpty()){
+                    variableToSend = "No available seats";
+                }
+                else if (ar.size() == 1)
                     variableToSend = String.valueOf(map1);
                 else if (ar.size() == 2) {
                     Map<String, Seat> filtered = map1.entrySet().stream()
@@ -116,13 +119,15 @@ public class TCPConHandler implements Runnable {
                             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
                     variableToSend = String.valueOf(filtered);
                 }
-                //TODO: display available seats nicely;
-
             } else if (ar.get(0).equalsIgnoreCase("reserve")) {
-                DButil.reserveSeat(ar.get(2), ar.get(1),Integer.parseInt(ar.get(3)));
+                int successful;
+                successful = DButil.reserveSeat(ar.get(2), ar.get(1),Integer.parseInt(ar.get(3)));
 
-                System.out.println(ar);
-                variableToSend = "reserve";
+                if (successful == 0){
+                    variableToSend = "Something went wrong with the reservation";
+                }else {
+                    variableToSend = "Reservation successful";
+                }
             }
 
             System.out.println("Manipulating client request and preparing response");
@@ -133,10 +138,6 @@ public class TCPConHandler implements Runnable {
             //Send data to the client using the output text stream.
             try {
                 outToClient.write(variableToSend + "\n");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            try {
                 outToClient.flush();
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -156,6 +157,7 @@ public class TCPConHandler implements Runnable {
             echoSocket.close();
         }
         catch (IOException e) {
+            e.printStackTrace();
         }
         //The server remains active waiting for incoming connections
         //Each TCP connection originating from a client is terminated by the client itself

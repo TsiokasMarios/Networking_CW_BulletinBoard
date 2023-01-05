@@ -16,7 +16,7 @@ public class TCPServer
     public void listen()
     {
         /* Socket for connections made */
-        Socket connectionSocket = null;
+        Socket connectionSocket;
 
         /* Server's listening socket */
         ServerSocket welcomeSocket;
@@ -58,16 +58,14 @@ public class TCPServer
         new Thread(new TCPConHandler(clientConnectionSocket)).start();
     }  /* End handleClient method */
 
-    public static void main( String argv[] ) throws Exception
-    {
+    public static void main(String[] argv) {
         /* The port the server is listening on */
-        int port;
 
         /* Parse the port which is passed to program as an arguement */
 //        port = Integer.parseInt( argv[0] );
 
         /* Create a new instance of the echo server */
-        TCPServer myServer = new TCPServer( 6999 );
+        TCPServer myServer = new TCPServer( 8504 );
         /* Listen for connections. It can not return until the server is shut down. */
         myServer.listen();
         /* Display message of server shutting down */
