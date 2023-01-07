@@ -1,0 +1,6 @@
+Step 1: Compile the java files
+
+Step 2: Run the server by doing
+		java -cp ".;sqlite-jdbc-3.39.4.1.jar" TCPServer
+Step 3: Run the client by doing
+		java -cp ".;sqlite-jdbc-3.39.4.1.jar" TCPClient

@@ -58,7 +58,7 @@ public class TCPServer
         new Thread(new TCPConHandler(clientConnectionSocket)).start();
     }  /* End handleClient method */
 
-    public static void main(String[] argv) {
+    public static void main(String[] args) {
         /* The port the server is listening on */
 
         /* Parse the port which is passed to program as an arguement */

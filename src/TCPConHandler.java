@@ -15,9 +15,27 @@ public class TCPConHandler implements Runnable {
         echoSocket = socketToHandle;
     }
 
+
+    private Boolean register(List<String> messageList){
+        return DButil.register(messageList.get(1), Integer.parseInt(messageList.get(2)), messageList.get(3), messageList.get(4)+messageList.get(5));
+    }
+
+    private Boolean login(List<String> messageList){
+        return DButil.checkIfUserExists(messageList.get(1));
+    }
+
+    //This method returns an int
+    //If the insert query is successful it returns 1
+    //Otherwise it returns 0
+    private int reserveSeat(List<String> messageList){
+        return DButil.reserveSeat(messageList.get(2), messageList.get(1), Integer.parseInt(messageList.get(3)));
+    }
+
+
+
     public void run() {
 
-        //Holds the messages we get from the user
+        //Stores the messages we get from the user
         String clientMessage;
 
         InputStreamReader inputStreamReader;
@@ -29,7 +47,7 @@ public class TCPConHandler implements Runnable {
 
         System.out.println("Starting the server application");
 
-        // Attach a println/readLine interface to the socketso we can read and write strings to the socket.
+        // Attach a println/readLine interface to the socket, so we can read and write strings to the socket.
         try {
             /* Get the IP address from the client */
             peerName = echoSocket.getInetAddress().getHostAddress();
@@ -64,7 +82,9 @@ public class TCPConHandler implements Runnable {
 
         System.out.println("Reading data from the client");
 
-        List<String> ar;
+        //Declare the messagelist and action variables
+        List<String> messageList;
+        String action;
 
         //Consume the input from the client.
         //Read a text string until the new line character.
@@ -85,49 +105,61 @@ public class TCPConHandler implements Runnable {
             }
 
             //Array that stores the messages from the client
-            ar = Arrays.asList(clientMessage.split(" "));
+            messageList = Arrays.asList(clientMessage.split(" "));
+            //Gets the first element from the messageList which indicates the action the client took
+            action = messageList.get(0).toLowerCase();
 
 
-            if (ar.get(0).equalsIgnoreCase("register")) {
+            switch (action) {
+                case "register":
+                    if (register(messageList)) {
+                        variableToSend = "Registered successfully";
+                    } else {
+                        variableToSend = "Something went wrong.Please try again";
+                    }
+                    break;
+                case "login":
+                    if (login(messageList)) {
+                        variableToSend = "Logged in with name: " + messageList.get(1);
+                    } else {
+                        variableToSend = "Wrong name";
+                    }
+                    break;
+                case "getavailableseats":
+                    //Call the function from the DButil class to get all the available seats
+                    LinkedHashMap<String, Seat> map1 = DButil.getSeats();
+                    if (map1.isEmpty()) { //If its empty it means there are no available seats
+                        variableToSend = "No available seats";
+                    }
+                    //If the messageList has a size of 1 it means the user did not ask for the seats per price range
+                    //Size = 1 get available seats
+                    //Size = 2 get available seats per price
+                    else if (messageList.size() == 1) {
+                        variableToSend = String.valueOf(map1);
+                    }
+                    else if (messageList.size() == 2) {
+                        int price = Integer.parseInt(messageList.get(1));
 
-                Boolean registered = DButil.register(ar.get(1), Integer.parseInt(ar.get(3)), ar.get(4), ar.get(5));
+                        //Make sure the received price to search for is valid
+                        if (price == 30 || price == 60 || price == 80) {
+                            Map<String, Seat> filtered = map1.entrySet().stream() //Convert the map to a stream
+                                    .filter(map -> map.getValue().getSeatPrice() == price) //Filter the map using the seat price with the value we got
+                                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)); //Convert it back to a map
+                            variableToSend = String.valueOf(filtered); //Converts the map to a string
+                        }
+                        else {
+                            variableToSend = "Wrong price tag given. Seats come in the prices of: 30, 60 or 90";
+                        }
 
-                if (registered) {
-                    variableToSend = "Registered succesfuly";
-                } else {
-                    variableToSend = "Something went wrong.Please try again";
-                }
-
-            }else if(ar.get(0).equalsIgnoreCase("login")){
-                if (DButil.checkIfUserExists(ar.get(1))){
-                    variableToSend = ar.get(1);
-                }
-                else{
-                    variableToSend = "Wrong name";
-                }
-            }
-            else if (ar.get(0).equalsIgnoreCase("getAvailableSeats")) {
-                LinkedHashMap<String, Seat> map1 = DButil.getSeats();
-                if (map1.isEmpty()){
-                    variableToSend = "No available seats";
-                }
-                else if (ar.size() == 1)
-                    variableToSend = String.valueOf(map1);
-                else if (ar.size() == 2) {
-                    Map<String, Seat> filtered = map1.entrySet().stream()
-                            .filter(map -> map.getValue().getSeatPrice() == 60)
-                            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-                    variableToSend = String.valueOf(filtered);
-                }
-            } else if (ar.get(0).equalsIgnoreCase("reserve")) {
-                int successful;
-                successful = DButil.reserveSeat(ar.get(2), ar.get(1),Integer.parseInt(ar.get(3)));
-
-                if (successful == 0){
-                    variableToSend = "Something went wrong with the reservation";
-                }else {
-                    variableToSend = "Reservation successful";
-                }
+                    }
+                    break;
+                case "reserveaseat":
+                    if (reserveSeat(messageList) == 0) {
+                        variableToSend = "Something went wrong with the reservation";
+                    } else {
+                        variableToSend = "Reservation successful";
+                    }
+                    break;
             }
 
             System.out.println("Manipulating client request and preparing response");

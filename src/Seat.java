@@ -37,8 +37,8 @@ public class Seat {
     public String toString() {
         return "Seat{" +
                 "seatId=" + seatId +
-                ", seatPrice" + seatPrice +
-                ", isAvailable" + isAvailable +
+                ", seatPrice: " + seatPrice +
+                ", isAvailable: " + isAvailable +
                 '}';
     }
 }

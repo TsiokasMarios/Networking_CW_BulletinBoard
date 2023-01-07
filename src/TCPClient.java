@@ -13,10 +13,8 @@ public class TCPClient {
         BufferedReader inFromUser;
         DataOutputStream outToServer;
         BufferedReader inFromServer;
-//        int port = 6999;
         String username = null;
 
-//        System.out.println("Starting the client application");
         System.out.println("-- Client connecting to host/port " + host + "/" + port + " --");
 
         try {
@@ -53,13 +51,13 @@ public class TCPClient {
         System.out.println("<-- Connection established  -->");
 
 
-        //Read a text string from the keyboard until you press Enter (new line character).
+        //Keep reading messages until the user types exit
         try {
             while (true) {
                 if (username == null)
                     System.out.println("Please enter what you want to do: \n1.Register\n2.Login \n3.Get available seats \n4.Get available seats per price\n5.Exit");
                 else
-                    System.out.println("Please enter what you want to do: \n 1.Get available seats\n2.Get available seats per price\n3.Reserve a seat\n4.Exit");
+                    System.out.println("Please enter what you want to do: \n1.Get available seats\n2.Get available seats per price\n3.Reserve a seat\n4.Exit");
                 //if user presses 1, send message to the server to see if username exists and then show different menu
 
                 phrase = inFromUser.readLine();
@@ -67,17 +65,27 @@ public class TCPClient {
                 if (phrase.equalsIgnoreCase("exit")) {
                     break;
                 }
+                phrase = phrase.replace(" ","");
                 String variableToSend = phrase.replace(" ","");
 
 
                 if (phrase.equalsIgnoreCase("register")) {
+                    int phone;
                     //ask the user to enter String username, String password, int phoneNum, String city, String fullName
                     //Send the data to the server
                     System.out.println("Enter username");
                     variableToSend += " " + inFromUser.readLine();
 
                     System.out.println("Enter phone number");
-                    variableToSend += " " + inFromUser.readLine();
+                    try {
+                        phone = Integer.parseInt(inFromUser.readLine());
+
+                    }catch (NumberFormatException e){
+                        System.out.print("Please enter a number");
+                        phone = Integer.parseInt(inFromUser.readLine());
+                    }
+
+                    variableToSend += " " + phone;
 
                     System.out.println("Enter city");
                     variableToSend += " " + inFromUser.readLine();
@@ -91,12 +99,12 @@ public class TCPClient {
                 }
                 else if (phrase.equalsIgnoreCase("getAvailableSeats")) {
                     variableToSend = "getAvailableSeats";
-                } else if (phrase.equalsIgnoreCase("perprice")) {
+                } else if (phrase.equalsIgnoreCase("getAvailableSeatsPerPrice")) {
                     //prompt user to enter price
                     //store the variable
                     System.out.println("Enter price to search by");
                     variableToSend = "getAvailableSeats " + inFromUser.readLine();
-                } else if (phrase.equalsIgnoreCase("reserve")) {
+                } else if (phrase.equalsIgnoreCase("reserveASeat")) {
                     //prompt user to enter the seat ID they want, customer phone, customer Name
                     //convert seat ID to capitals
                     System.out.println("Enter your username");
@@ -108,10 +116,7 @@ public class TCPClient {
                     variableToSend += " " + inFromUser.readLine();
                     System.out.println("Enter your customer's name");
                     variableToSend += " " + inFromUser.readLine();
-                } else if (phrase.equalsIgnoreCase("reserverAnon")) {
-                    variableToSend = "reserverAnon";
                 }
-
                 System.out.println("Sending the phrase to the server");
 
                 //Send data (text string) to the server
@@ -150,11 +155,11 @@ public class TCPClient {
         int port;
 
         server = "127.0.0.1";
-        port = 6999;
+        port = 8504;
 
-        TCPClient myclient = new TCPClient();
+        TCPClient client = new TCPClient();
 
-        myclient.Connect(server,port);
+        client.Connect(server,port);
         System.out.println("<-- Client has exited -->");
     }
 
